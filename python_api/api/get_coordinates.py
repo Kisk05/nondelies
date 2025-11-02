@@ -36,9 +36,4 @@ def get_coordinates(address):
         return None, None
 
 address=get_address(6750061)
-lat1,lng1=get_coordinates(address)
-print(f"住所1:{lat1,lng1}")
-address=get_address(6500003)
-lat2,lng2=get_coordinates(address)
-print(f"住所2:{lat2,lng2}")
-print(f"距離:{get_difference(lat1,lng1,lat2,lng2)}m")
+print(get_coordinates(address))
