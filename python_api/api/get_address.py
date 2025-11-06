@@ -1,3 +1,4 @@
+"""郵便番号から住所を求める"""
 import requests
 
 def get_address(postcode):

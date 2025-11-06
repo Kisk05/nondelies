@@ -1,3 +1,4 @@
+"""2点間の距離を求める"""
 import requests
 
 def get_difference(lat1,lng1,lat2,lng2):
