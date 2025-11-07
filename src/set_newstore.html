@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <label for="sup_id">スーパーID (sup_id):</label>
+    <input type="number" id="sup_id" value="1" min="1">
+
+    <label for="store_name">店舗名 (store_name):</label>
+    <input type="text" id="store_name">
+
+    <label for="store_postcode">郵便番号 (store_postcode):</label>
+    <input type="number" id="store_postcode">
+
+    <label for="store_address">住所 (store_address):</label>
+    <input type="text" id="store_address">
+
+    <button onclick="fetchchecknewuser()">新規店舗登録</button>
+    <div id="output">成功判定...</div>
+
+    <script src="set_newstore.js"></script>
+</body>
+</html>

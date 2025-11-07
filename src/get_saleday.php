@@ -22,7 +22,7 @@ try{
     $set_supid=isset($_GET['sup_id'])?(int)$_GET['sup_id']:null;
     
     if (is_null($set_supid)){
-        $ERROR[]="sup_idを指定してください"
+        $ERROR[]="sup_idを指定してください";
     }
 
     $stmt->bindParam(':sup_id', $set_supid, PDO::PARAM_INT);
@@ -35,7 +35,7 @@ try{
 
     // JSONに変換
     header('Content-Type: application/json');
-    echo json_encode($saledays)
+    echo json_encode($saledays);
 } catch(PDOException $e) {
 	$ERROR[] = $e->getMessage();
 }

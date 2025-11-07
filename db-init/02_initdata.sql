@@ -1,2 +1,2 @@
-insert into super(sup_id,sup_name) values
-(0001,"業務スーパー");
+insert into super(sup_name) values
+("業務スーパー");
