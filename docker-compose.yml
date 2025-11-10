@@ -32,8 +32,6 @@ services:
       - ./python_api:/app
     env_file:
       - .env
-    depends_on:
-      - web
 
 
   # データベース

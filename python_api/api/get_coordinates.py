@@ -2,8 +2,6 @@
 import requests
 import os
 from dotenv import load_dotenv
-from get_address import get_address
-from get_difference import get_difference
 load_dotenv()
 
 def get_coordinates(address):
@@ -35,6 +33,3 @@ def get_coordinates(address):
     except Exception as e:
         print(f"座標取得エラー: {e}")
         return None, None
-
-address=get_address(6750061)
-print(get_coordinates(address))
