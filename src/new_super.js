@@ -1,12 +1,13 @@
-function fetchsetnewstore() {
-    const supId = document.getElementById('sup_id').value;
-    const stoName = document.getElementById('sto_name').value;
-    const stoPostcode = document.getElementById('sto_postcode').value;
-    const stoAddress = document.getElementById('sto_address').value;
+function fetchnewsuper() {
+    const supName = document.getElementById('super_name').value;
     const outputDiv = document.getElementById('output');
     outputDiv.textContent = '取得中...';
 
-    const apiURL = `set_newstore.php?sup_id=${supId}&sto_name=${stoName}&sto_postcode=${stoPostcode},&sto_address=${stoAddress}`;
+    if (supName===""){
+        outputDiv.textContent='スーパー名が入力されていません';
+        return;
+    }
+    const apiURL = `new_super.php?sup_name=${supName}`;
 
     fetch(apiURL)
         .then(response => {

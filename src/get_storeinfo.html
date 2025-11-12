@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>店舗情報取得画面</title>
+</head>
+<body>
+    <label for="sup_id">スーパー選択:</label>
+    <select id="sup_id" required onchange="loadStoreList()">
+        <option value="">ロード中...</option>
+    </select>
+    <br>
+    <label for="sto_id">店舗選択:</label>
+    <select id="sto_id" required>
+        <option value="">スーパー名を選択してください</option>
+    </select>
+    <br>
+    <button onclick="fetchsaleday()">お得日を取得</button>
+    <button onclick="fetchCoordinates()">座標を取得</button>
+    <div id="output">結果がここに表示されます...</div>
+    
+    <script src="get_storeinfo.js?v=1"></script>
+</body>
+</html>

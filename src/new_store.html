@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>新規店舗登録画面</title>
+</head>
+<body>
+    <label for="sup_id">スーパー選択:</label>
+    <select id="sup_id" required>
+        <option value="">ロード中...</option>
+    </select>
+    <br>
+    <label for="store_name">店舗名 (store_name):</label>
+    <input type="text" id="store_name" required>
+    <br>
+    <label for="store_postcode">郵便番号 (store_postcode):</label>
+    <input type="number" id="store_postcode" required>
+    <br>
+    <label for="store_address">住所 (store_address):</label>
+    <input type="text" id="store_address" required>
+    <br>
+    <button onclick="fetchnewstore()">新規店舗登録</button>
+    <div id="output">成功判定...</div>
+
+    <script src="new_store.js?v=1"></script>
+</body>
+</html>
