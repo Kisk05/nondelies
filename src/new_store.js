@@ -30,44 +30,75 @@ function loadSuperList() {
         });
 }
 
-function fetchnewstore() {
+async function fetchnewstore() {
     const supId = document.getElementById('sup_id').value;
     const stoName = document.getElementById('store_name').value;
     const stoPostcode = document.getElementById('store_postcode').value;
-    const stoAddress = document.getElementById('store_address').value;
+    let stoAddress = document.getElementById('store_address').value;
     const outputDiv = document.getElementById('output');
     outputDiv.textContent = '取得中...';
 
-    if (stoAddress===""){
-        outputDiv.textContent='住所が入力されていません';
+    if (supId===""||stoName===""||stoPostcode===""){
+        outputDiv.textContent='必須項目が入力されていません';
         return;
     }
+    if (stoAddress === "") {
+        outputDiv.textContent = '住所を郵便番号から取得中...';
+        try {
+            stoAddress = await fetchsetaddress(stoPostcode); 
+            
+            if (!stoAddress) {
+                 outputDiv.textContent = 'エラー: 郵便番号から住所を取得できませんでした。';
+                 return;
+            }
+            outputDiv.textContent = '座標を計算中...';
+        } catch (error) {
+            outputDiv.textContent = `住所取得エラー: ${error.message}`;
+            return;
+        }
+    }
+
     const apiURL = `get_zahyou.php?address=${stoAddress}`;
 
-    fetch(apiURL)
+    try {
+        const response = await fetch(apiURL);
+        if (!response.ok) {
+            throw new Error(`HTTPエラー ${response.status}`);
+        }
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            const stoLat = data.latitude;
+            const stoLon = data.longitude;
+
+            const setApiURL = `new_store.php?sup_id=${supId}&sto_name=${stoName}&sto_postcode=${stoPostcode}&sto_address=${stoAddress}&sto_latitude=${stoLat}&sto_longitude=${stoLon}`;
+
+            const dbResponse = await fetch(setApiURL);
+            const dbResult = await dbResponse.json();
+            
+            outputDiv.textContent = '実行: ' + JSON.stringify(dbResult, null, 2);
+        } else {
+            throw new Error(data.message || "座標取得APIエラー");
+        }
+    } catch (error) {
+        outputDiv.textContent = `致命的なエラー: ${error.message}`;
+        console.error(error);
+    }
+}
+
+function fetchsetaddress(stoPostcode) {
+    const apiURL = `get_address.php?postcode=${stoPostcode}`;
+
+    return fetch(apiURL)
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                const stoLat = data.latitude;
-                const stoLon = data.longitude;
-
-                const setApiURL = `new_store.php?sup_id=${supId}&sto_name=${stoName}&sto_postcode=${stoPostcode}&sto_address=${stoAddress}&sto_latitude=${stoLat}&sto_longitude=${stoLon}`;
-
-                return fetch(setApiURL);
+                return data.address;
             } else {
-                // 座標取得失敗時
-                throw new Error(data.message || "座標取得APIエラー");
+                throw new Error(data.message || "住所取得APIエラー");
             }
         })
-        .then(response => response.json())
-        .then(dbResult => {
-            outputDiv.textContent = '実行: ' + JSON.stringify(dbResult, null, 2);
-        })
-        .catch(error => {
-            // エラー処理
-            outputDiv.textContent = `致命的なエラー: ${error.message}`;
-            console.error(error);
-        });
 }
+
 
 document.addEventListener('DOMContentLoaded', loadSuperList);

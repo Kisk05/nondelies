@@ -1,7 +1,7 @@
 function fetchnewsuper() {
     const supName = document.getElementById('super_name').value;
     const outputDiv = document.getElementById('output');
-    outputDiv.textContent = '取得中...';
+    outputDiv.textContent = '処理中...';
 
     if (supName===""){
         outputDiv.textContent='スーパー名が入力されていません';

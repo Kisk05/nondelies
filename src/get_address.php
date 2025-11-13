@@ -1,20 +1,20 @@
 <?php
 define('PYTHON_API_HOST', 'python_api');
 define('PYTHON_API_PORT', '5000');
-define('API_ROUTE', '/geocode_address');
+define('API_ROUTE', '/address_lookup');
 
-$address_input = isset($_GET['address']) ? $_GET['address'] : null;
+$postcode_input = isset($_GET['postcode']) ? $_GET['postcode'] : null;
 
 // 必須パラメータがない場合
-if (is_null($address_input)) {
+if (is_null($postcode_input)) {
     http_response_code(400);
-    echo "エラー: 住所(address)を指定してください";
+    echo "エラー: 郵便番号(postcode)を指定してください";
     exit;
 }
 
-$encoded_address = urlencode($address_input);
+$encoded_postcode = urlencode($postcode_input);
 
-$url = "http://" . PYTHON_API_HOST . ":" . PYTHON_API_PORT . API_ROUTE . "?address=" . $encoded_address;
+$url = "http://" . PYTHON_API_HOST . ":" . PYTHON_API_PORT . API_ROUTE . "?postcode=" . $encoded_postcode;
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
@@ -46,9 +46,7 @@ if (isset($data['status']) && $data['status'] === 'success') {
     // 成功時の処理
     echo json_encode([
         'status' => 'success',
-        'address' => $data['address'] ?? $address_input,
-        'latitude' => $data['latitude'],
-        'longitude' => $data['longitude']
+        'address' => $data['address'] ?? $postcode_input,
     ]);
 } else {
     // Python側で座標が見つからなかった場合のエラー
