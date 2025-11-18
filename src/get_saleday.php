@@ -13,7 +13,7 @@ try{
     $db=new PDO('mysql:dbname='.DB_NAME.';host='.DB_HOST.';charset=utf8',DB_USER,DB_PASS);
     
     //　SQL文
-    $sql='SELECT sal_day,sal_kind,sal_discount,sal_info FROM sales WHERE sup_id = :sup_id';
+    $sql='SELECT event_id,sal_kind,sal_discount,sal_info FROM sales WHERE sup_id = :sup_id';
 
     // SQL実行の準備
     $stmt = $db->prepare($sql);

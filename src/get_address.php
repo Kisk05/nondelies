@@ -26,6 +26,8 @@ $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 $curl_error = curl_error($ch);
 curl_close($ch);
 
+header('Content-Type: application/json');
+
 if ($response === false) {
     // ネットワークレベルのエラー (コンテナが見つからないなど)
     http_response_code(503);

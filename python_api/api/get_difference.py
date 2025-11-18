@@ -1,16 +1,16 @@
 """2点間の距離を求める"""
 import requests
 
-def get_difference(lat1,lng1,lat2,lng2):
+def get_difference(lat1,lon1,lat2,lon2):
     DIFFERENCE_API_URL = "http://vldb.gsi.go.jp/sokuchi/surveycalc/surveycalc/bl2st_calc.pl?" 
     
     params = {
         "outputType": "json",
         "ellipsoid": "bessel",
         "latitude1":lat1,
-        "longitude1":lng1,
+        "longitude1":lon1,
         "latitude2":lat2,
-        "longitude2":lng2
+        "longitude2":lon2
     }
     
     try:
@@ -20,7 +20,7 @@ def get_difference(lat1,lng1,lat2,lng2):
 
         diff=data["OutputData"]["geoLength"]
         if diff=="":
-            return 0
+            return 0.0
         return diff
         
     except Exception as e:
