@@ -43,9 +43,11 @@ create table favsuper(
 
 create table events(
     event_id integer PRIMARY KEY AUTO_INCREMENT,
+    event_dayofweek varchar(3),
     event_rtype varchar(20),
-    event_rvalue integer,
-    event_startday date
+    event_monthday integer,
+    event_yearday date,
+    event_oneday date
 );
 
 create table sales(
