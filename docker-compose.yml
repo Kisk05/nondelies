@@ -11,7 +11,8 @@ services:
     ports:
       - "8081:80"
     volumes:
-      - ./src:/var/www/html  
+      - ./src:/var/www/html 
+      - ./mysql-client.cnf:/etc/mysql/conf.d/client.cnf 
     # 依存関係
     depends_on:
       - db 
@@ -36,9 +37,10 @@ services:
 
   # データベース
   db:
-    image: mysql:8.0 
+    build:
+      context: .
+      dockerfile: dockerfile.db
     container_name: nondelies_db
-
     # 環境変数
     environment:
       # ルートユーザーのパスワード
@@ -49,11 +51,13 @@ services:
       MYSQL_USER: ndl_user 
       # アプリケーションが使用するユーザーのパスワード
       MYSQL_PASSWORD:  ndl_passwd
+      
+      TZ: Asia/Tokyo
 
     volumes:
       - db_data:/var/lib/mysql
       - ./db-init:/docker-entrypoint-initdb.d
-      - ./mysql-client.cnf:/etc/mysql/conf.d/mysql-client.cnf
+      - ./mysql-client.cnf:/etc/mysql/conf.d/client.cnf
 
 volumes:
   db_data:

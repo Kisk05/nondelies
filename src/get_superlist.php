@@ -15,19 +15,25 @@ try{
     
     //　SQL文
     $sql='SELECT sup_id, sup_name FROM super';
+    $countsql='SELECT count(*) FROM super';
 
     // SQL実行の準備
     $stmt = $db->prepare($sql);
+    $countstmt = $db->prepare($countsql);
 
     // 実行
     $stmt->execute();
+    $countstmt->execute();
 
     // 取得
     $superlist = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $supernum = $countstmt->fetchColumn(0);
 
     // JSONに変換
     $response['status'] = 'success';
     $response['data'] = $superlist;
+    $response['count']=$supernum;
+    header('Content-Type: application/json');
     echo json_encode($response);
 } catch(PDOException $e) {
 	http_response_code(500);

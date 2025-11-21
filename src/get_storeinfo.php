@@ -14,34 +14,31 @@ try{
     $db=new PDO('mysql:dbname='.DB_NAME.';host='.DB_HOST.';charset=utf8mb4',DB_USER,DB_PASS);
     
     //　SQL文
-    $sql='SELECT sto_id, sto_name FROM store where sup_id=:sup_id';
-    $countsql='SELECT count(*) FROM store';
+    $sql='SELECT sto_name,sto_postcode,sto_address FROM store WHERE sup_id=:sup_id AND sto_id=:sto_id';
 
     // SQL実行の準備
     $stmt = $db->prepare($sql);
-    $countstmt = $db->prepare($countsql);
 
     // パラメータを代入
     $set_supid=isset($_GET['sup_id'])?(int)$_GET['sup_id']:null;
+    $set_stoid=isset($_GET['sto_id'])?(int)$_GET['sto_id']:null;
     
-    if (is_null($set_supid)){
-        $ERROR[]="sup_idを指定してください";
+    if (is_null($set_supid)||is_null($set_stoid)){
+        $ERROR[]="必要な要素を指定してください";
     }
 
     $stmt->bindParam(':sup_id', $set_supid, PDO::PARAM_INT);
+    $stmt->bindParam(':sto_id', $set_stoid, PDO::PARAM_INT);
 
     // 実行
     $stmt->execute();
-    $countstmt->execute();
 
     // 取得
-    $storelist = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $storenum = $countstmt->fetchColumn(0);
+    $storeinfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // JSONに変換
     $response['status'] = 'success';
-    $response['data'] = $storelist;
-    $response['count'] = $storenum;
+    $response['data'] = $storeinfo;
     header('Content-Type: application/json');
     echo json_encode($response);
 } catch(PDOException $e) {

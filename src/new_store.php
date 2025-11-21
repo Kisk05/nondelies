@@ -47,8 +47,21 @@ try{
     header('Content-Type: application/json');
     echo json_encode(['status' => 'success', 'message' => '店舗情報を登録しました。']);
 } catch(PDOException $e) {
-	$ERROR[] = $e->getMessage();
+	$sqlstate=$e->getCode();
+    $drivercode=$e->errorInfo[1];
+    $errormessage=$e->getMessage();
+    $usermessage=null;
+
+    if($drivercode===1062)
+    {
+        $usermessage="この店舗は既に登録されています";
+        http_response_code(409);
+    }
+    else
+    {
+        $usermessage="サーバー内部エラー：". $errormessage;
+        http_response_code(500);
+    }
     header('Content-Type: application/json');
-    http_response_code(500);
-    echo json_encode(['status' => 'error', 'messages' => $ERROR]);
+    echo json_encode(['status' => 'error', 'messages' => $usermessage]);
 }

@@ -6,8 +6,13 @@
 </head>
 <body>
     <label for="sup_id">スーパー選択:</label>
-    <select id="sup_id" required>
+    <select id="sup_id" required onchange="loadStoreList()">
         <option value="">ロード中...</option>
+    </select>
+    <br>
+    <label for="sto_id">店舗選択:</label>
+    <select id="sto_id" required onchange="loadStoreInfo()">
+        <option value="">スーパー名を選択してください</option>
     </select>
     <br>
     <label for="store_name">店舗名 (store_name):</label>
@@ -19,9 +24,10 @@
     <label for="store_address">住所 (store_address):</label>
     <input type="text" id="store_address" required>
     <br>
-    <button onclick="fetchnewstore()">新規店舗登録</button>
+    <button onclick="fetchnewstore()">新規店舗を登録</button>
+    <!--<button id="b1" onclick="changestore()">店舗情報を変更</button>-->
     <div id="output"></div>
 
-    <script src="new_store.js?v=1"></script>
+    <script src="new_store.js?v=3"></script>
 </body>
 </html>

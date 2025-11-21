@@ -15,19 +15,21 @@ try{
     // 操作用オブジェクト作成
     $db = new PDO($dsn, DB_USER, DB_PASS, $options);
     //　SQL文
-    $sql='INSERT INTO super(sup_name) VALUES (:sup_name)';
+    $sql='UPDATE super SET sup_name=:sup_name WHERE sup_id=:sup_id';
 
     // SQL実行の準備
     $stmt = $db->prepare($sql);
 
     // 値を取得
+    $set_supid=$_GET['sup_id'] ?? null;
     $set_supname = $_GET['sup_name'] ?? null;
     
-    if (is_null($set_supname)){
-        $ERROR[]="sup_nameを指定してください";
+    if (is_null($set_supid)||is_null($set_supname)){
+        $ERROR[]="必要な要素を指定してください";
     }
 
     // パラメータに代入
+    $stmt->bindParam(':sup_id', $set_supid, PDO::PARAM_INT);
     $stmt->bindParam(':sup_name', $set_supname, PDO::PARAM_STR);
     
     // 実行
@@ -35,23 +37,10 @@ try{
 
     // JSONに変換
     header('Content-Type: application/json');
-    echo json_encode(['status' => 'success', 'message' => 'スーパーを登録しました。']);
+    echo json_encode(['status' => 'success', 'message' => 'スーパー名を変更しました。']);
 } catch(PDOException $e) {
-	$sqlstate=$e->getCode();
-    $drivercode=$e->errorInfo[1];
-    $errormessage=$e->getMessage();
-    $usermessage=null;
-
-    if($drivercode===1062)
-    {
-        $usermessage="このスーパー名は既に登録されています";
-        http_response_code(409);
-    }
-    else
-    {
-        $usermessage="サーバー内部エラー：". $errormessage;
-        http_response_code(500);
-    }
+	$ERROR[] = $e->getMessage();
     header('Content-Type: application/json');
-    echo json_encode(['status' => 'error', 'messages' => $usermessage]);
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'messages' => $ERROR]);
 }

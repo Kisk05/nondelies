@@ -1,0 +1,9 @@
+FROM mysql:8.0
+
+ENV LANG=ja_JP.UTF-8
+ENV LC_ALL=ja_JP.UTF-8
+ENV MYSQL_CLIENT_OPTIONS "--default-character-set=utf8mb4"
+
+RUN echo "alias mysql='mysql --default-character-set=utf8mb4'" >> /etc/bash.bashrc
+RUN cp /etc/bash.bashrc /root/.bashrc && \
+    chmod 644 /root/.bashrc

@@ -27,8 +27,6 @@ RUN apt update && \
 RUN apt update && apt install -y libcurl4-openssl-dev
 RUN apt install php8.3-curl
 
-RUN echo "alias mysql='mysql --default-character-set=utf8mb4'" >> ~/.bashrc
-
 WORKDIR /var/www/html
 
 RUN a2enmod rewrite

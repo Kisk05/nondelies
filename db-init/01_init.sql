@@ -22,7 +22,7 @@ create table super(
 create table store(
     sto_id integer AUTO_INCREMENT,
     sup_id integer,
-    sto_name varchar(50) NOT NULL,
+    sto_name varchar(50) NOT NULL UNIQUE,
     sto_postcode char(7) NOT NULL,
     sto_address varchar(255) NOT NULL,
     sto_latitude decimal(10,8),

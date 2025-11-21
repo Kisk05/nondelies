@@ -10,7 +10,7 @@ function loadSuperList() {
                 // デフォルトの選択肢を追加
                 const defaultOption = document.createElement('option');
                 defaultOption.value = '';
-                defaultOption.textContent = '--- 選択してください ---';
+                defaultOption.textContent = `${result.count}件のデータがあります`;
                 selectElement.appendChild(defaultOption);
 
                 // DBから取得したデータでオプションを生成
@@ -48,7 +48,7 @@ function loadStoreList() {
                 // デフォルトの選択肢を追加
                 const defaultOption = document.createElement('option');
                 defaultOption.value = '';
-                defaultOption.textContent = '--- 選択してください ---';
+                defaultOption.textContent = `${result.count}件のデータがあります`;
                 selectElement.appendChild(defaultOption);
 
                 // DBから取得したデータでオプションを生成

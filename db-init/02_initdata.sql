@@ -1,3 +1,5 @@
+SET NAMES utf8mb4;
+
 INSERT INTO super(sup_name) VALUES("マルハチ");
 INSERT INTO super(sup_name) VALUES("マルアイ");
 INSERT INTO super(sup_name) VALUES("関西スーパー");
