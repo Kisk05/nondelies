@@ -9,14 +9,12 @@ define('DB_PASS', 'ndl_passwd');
 try{
     // 操作用オブジェクト作成
     $db=new PDO('mysql:dbname='.DB_NAME.';host='.DB_HOST.';charset=utf8mb4',DB_USER,DB_PASS);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    $db->beginTransaction();
 
     $sup_ids = $_GET['sup_ids'] ?? null;
+    $dayofweek=$_GET['dayofweek'] ?? null;
     $setDay = $_GET['day'] ?? null;
 
-    if (is_null($sup_ids) || is_null($setDay)) {
+    if (is_null($sup_ids) || is_null($setDay) || is_null($dayofweek)) {
         http_response_code(400);
         $response['message'] = "スーパーIDと日付が指定されていません。";
         echo json_encode($response);
@@ -27,13 +25,18 @@ try{
     $safe_sup_ids = array_map('intval', $sup_ids_array);
     $placeholders = implode(',', array_fill(0, count($safe_sup_ids), '?'));
 
-    $salesql='SELECT s.sal_id, s.sal_kind         
-        FROM sales as s          
-        JOIN events as e ON s.event_id = e.event_id          
-        WHERE s.sup_id IN (' . $placeholders . ')
+    $salesql='SELECT s.sal_id, s.sup_id, s.sal_kind, s.sal_discount, sal_info, e.event_rtype       
+        FROM sales as s JOIN events as e ON s.event_id = e.event_id          
+        WHERE s.sup_id IN (' . $placeholders . ') AND e.event_dayofweek = ?
         ';
-    $fessql='SELECT fes_id,event_id,fes_name,fes_info FROM fes WHERE sup_id IN (' . $placeholders . ')';
-    $holidaysql='SELECT hol_id,event_id,hol_name,hol_info FROM holiday WHERE sup_id IN (' . $placeholders . ')';
+    $fessql='SELECT f.fes_id, f.sup_id, f.fes_name, f.fes_info 
+        FROM fes as f JOIN events as e ON f.event_id=e.event_id
+        WHERE f.sup_id IN (' . $placeholders . ') AND e.event_dayofweek = ?
+        ';
+    $holidaysql='SELECT h.hol_id, h.sup_id, h.hol_name, h.hol_info 
+        FROM holiday as h JOIN events as e ON h.event_id=e.event_id
+        WHERE h.sup_id IN (' . $placeholders . ') AND e.event_dayofweek = ?
+        ';
     
     // SQL実行の準備
     $salestmt = $db->prepare($salesql);
@@ -41,14 +44,24 @@ try{
     $holidaystmt = $db->prepare($holidaysql);
 
     $bind_params = $safe_sup_ids;
-    $bind_params[] = $setDay;
+    
+
+    foreach ($safe_sup_ids as $index => $id) {
+        $salestmt->bindValue($index + 1, $id, PDO::PARAM_INT);
+        $fesstmt->bindValue($index + 1, $id, PDO::PARAM_INT);
+        $holidaystmt->bindValue($index + 1, $id, PDO::PARAM_INT);
+    }
+
+    $dayofweek_index = count($safe_sup_ids) + 1;
+
+    $salestmt->bindValue($dayofweek_index, $dayofweek, PDO::PARAM_INT);
+    $fesstmt->bindValue($dayofweek_index, $dayofweek, PDO::PARAM_INT);
+    $holidaystmt->bindValue($dayofweek_index, $dayofweek, PDO::PARAM_INT);
 
     // 実行
-    $salestmt->execute($safe_sup_ids);// 現在はsetDayを使用していないため（使用する場合は$bind_paramsに変更）
-    $fesstmt->execute($safe_sup_ids);
-    $holidaystmt->execute($safe_sup_ids);
-
-    $db->commit();
+    $salestmt->execute();
+    $fesstmt->execute();
+    $holidaystmt->execute();
 
     // 取得
     $saledays = $salestmt->fetchAll(PDO::FETCH_ASSOC);
@@ -66,10 +79,6 @@ try{
     echo json_encode($response);
 
 } catch(PDOException $e) {
-    if ($db->inTransaction()) {
-        $db->rollBack();
-    }
-
 	http_response_code(500);
     $response['message'] = "DBエラー: " . $e->getMessage();
     $response['status'] = 'error';

@@ -130,8 +130,6 @@ function selectcheckbox(){
         showCalendar(year, month);
         return;
     }
-    
-    alert(`選択されたスーパーは${selectedSupIds}です`)
     // カレンダーを再描画し、お得日データをAPIから取得して表示する
     // updateCalendarWithSpecialDays(year, month, selectedSupIds);
 }

@@ -26,7 +26,7 @@ try{
     $set_yday = $_GET['event_yearday'] ?? null;
     $set_oneday = $_GET['event_oneday'] ?? null;
     
-    if(empty($set_dayofweek) || $set_dayofweek === ''){
+    if(empty($set_dayofweek) || $set_dayofweek === -1){
         $set_dayofweek = null;
     }
     if (empty($set_mday) || $set_mday === 0) {
@@ -49,7 +49,7 @@ try{
     }
 
     // パラメータに代入
-    $stmt->bindParam(':dayofweek', $set_dayofweek, PDO::PARAM_STR);
+    $stmt->bindParam(':dayofweek', $set_dayofweek, PDO::PARAM_INT);
     $stmt->bindParam(':rtype', $set_rtype, PDO::PARAM_STR);
     $stmt->bindParam(':mday', $set_mday, PDO::PARAM_INT);
     $stmt->bindParam(':yday', $set_yday, PDO::PARAM_STR);
@@ -70,7 +70,7 @@ try{
         $stmt = $db->prepare($sql);
         
         // 既存のbindParamを再利用 (変数名が同じため)
-        $stmt->bindParam(':dayofweek', $set_dayofweek, PDO::PARAM_STR);
+        $stmt->bindParam(':dayofweek', $set_dayofweek, PDO::PARAM_INT);
         $stmt->bindParam(':rtype', $set_rtype, PDO::PARAM_STR);
         $stmt->bindParam(':mday', $set_mday, PDO::PARAM_INT);
         $stmt->bindParam(':yday', $set_yday, PDO::PARAM_STR);

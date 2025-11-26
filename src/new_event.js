@@ -77,6 +77,7 @@ async function fetchnewsale(){
         console.error(error);
     }
 }
+
 async function fetchnewfes(){
     const supId=document.getElementById('sup_id').value;
     const rType=document.getElementById('repeat_type').value;
