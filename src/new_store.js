@@ -1,7 +1,7 @@
 function loadSuperList() {
     const selectElement = document.getElementById('sup_id');
     const apiURL = 'get_superlist.php';
-
+    
     fetch(apiURL)
         .then(response => response.json())
         .then(result => {
@@ -150,6 +150,7 @@ async function fetchnewstore() {
             const dbResponse = await fetch(setApiURL);
             const dbResult = await dbResponse.json();
             
+            clearelements();
             outputDiv.textContent = '実行: ' + JSON.stringify(dbResult, null, 2);
         } 
         else 
@@ -215,6 +216,7 @@ async function changestore() {
             const dbResponse = await fetch(setApiURL);
             const dbResult = await dbResponse.json();
             
+            clearelements();
             outputDiv.textContent = '実行: ' + JSON.stringify(dbResult, null, 2);
         } 
         else 
@@ -241,5 +243,18 @@ function fetchsetaddress(stoPostcode) {
         })
 }
 
+function clearelements(){
+    const stoidElement = document.getElementById('sto_id');
+    const stonameElement = document.getElementById('store_name');
+    const stopostElement = document.getElementById('store_postcode');
+    const stoaddElement = document.getElementById('store_address');
+    
+    // 店舗リストを初期状態に戻す
+    stoidElement.innerHTML = '<option value="">スーパー名を選択してください</option>';
+    stonameElement.value = '';
+    stopostElement.value = '';
+    stoaddElement.value = '';
+    loadSuperList();
+}
 
 document.addEventListener('DOMContentLoaded', loadSuperList);

@@ -15,7 +15,7 @@ try{
     
     //　SQL文
     $sql='SELECT sto_id, sto_name FROM store where sup_id=:sup_id';
-    $countsql='SELECT count(*) FROM store';
+    $countsql='SELECT count(*) FROM store where sup_id=:sup_id';
 
     // SQL実行の準備
     $stmt = $db->prepare($sql);
@@ -29,6 +29,7 @@ try{
     }
 
     $stmt->bindParam(':sup_id', $set_supid, PDO::PARAM_INT);
+    $countstmt->bindParam(':sup_id', $set_supid, PDO::PARAM_INT);
 
     // 実行
     $stmt->execute();
