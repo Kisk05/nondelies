@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const day = params.get('day'); // 例: '2025/11/25'
     const Day=new Date(day);
-    const dayofweek=Day.getDay();
+    const dayofweek=Day.getDay(); // 日曜(0)～土曜(6)
+    const monthday=`${Day.getMonth()+1}/${Day.getDate()}`; // 例: '11/25'
+    const onlyday=Day.getDate(); // 例: 25
     const selectIds = params.get('selectid'); // 例: '1,3,5'
     supertitle.textContent='選択スーパー：'
 
@@ -16,25 +18,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             supertitle.textContent += ` ${supname}`;
         }
         
-        console.log(`日付: ${day}, 曜日ID: ${dayofweek}, 選択スーパーID: ${selectIds}`);
+        console.log(`日付: ${day}, 月日: ${monthday}, 日: ${onlyday}, 曜日ID: ${dayofweek}, 選択スーパーID: ${selectIds}`);
         pagetitle.textContent=`${day}のお得情報`
         
         // サーバーAPIを呼び出し、情報をロードする関数をここで実行
-        loadDayData(day, dayofweek, selectIds);
+        loadDayData(day, monthday, onlyday, dayofweek, selectIds);
         
-    } else {
+    } else if(day){
+        document.body.innerHTML = '<h1>エラー: スーパーが選択されていません。</h1>';
+        console.log(`日付: ${day}, 月日: ${monthday}, 日: ${onlyday}, 曜日ID: ${dayofweek}, 選択スーパーID: ${selectIds}`);
+    }else{
         document.body.innerHTML = '<h1>エラー: 必要な情報が不足しています。</h1>';
+        console.log(`日付: ${day}, 月日: ${monthday}, 日: ${onlyday}, 曜日ID: ${dayofweek}, 選択スーパーID: ${selectIds}`);
     }
 });
 
-async function loadDayData(day, dayofweek, selectIds) {
+async function loadDayData(day, monthday, onlyday, dayofweek, selectIds) {
     const saletitle = document.getElementById('sale_title');
     const festitle = document.getElementById('fes_title');
     const holtitle = document.getElementById('holiday_title');
     const scontainer=document.querySelector('#sale_list');
     const fcontainer=document.querySelector('#fes_list');
     const hcontainer=document.querySelector('#holiday_list');
-    const apiURL = `get_daydata.php?day=${day}&dayofweek=${dayofweek}&sup_ids=${selectIds}`;
+    const apiURL = `get_daydata.php?day=${day}&monthday=${monthday}&onlyday=${onlyday}&dayofweek=${dayofweek}&sup_ids=${selectIds}`;
     
     fetch(apiURL)
         .then(response => response.json())

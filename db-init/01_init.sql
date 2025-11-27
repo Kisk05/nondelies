@@ -46,7 +46,7 @@ create table events(
     event_dayofweek integer,
     event_rtype varchar(20),
     event_monthday integer,
-    event_yearday date,
+    event_yearday varchar(10),
     event_oneday date
 );
 

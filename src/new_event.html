@@ -29,7 +29,7 @@
     </select>
     <br><br>
     <label for="repeat_dayofweek">毎週恒例の開催曜日:</label>
-    <select id="repeat_dayofweek" required>
+    <select id="repeat_dayofweek">
         <option value=-1>曜日を選択</option>
         <option value=0>日</option>
         <option value=1>月</option>
@@ -41,13 +41,14 @@
     </select>
     <br>
     <label for="repeat_monthday">毎月恒例の開催日:</label>
-    <input type="number" id="repeat_monthday" required>
+    <input type="number" id="repeat_monthday" min=1 max=31>日
     <br>
     <label for="repeat_yearday">毎年恒例の開催日:</label>
-    <input type="date" id="repeat_yearday" required>
+    <input type="number" id="month" min=1 max=12>月
+    <input type="number" id="day" min=1 max=31>日
     <br>
     <label for="repeat_oneday">単発の開催日:</label>
-    <input type="date" id="repeat_oneday" required>
+    <input type="date" id="repeat_oneday">
     <br>
     <h3>セール情報</h3>
     <fieldset id="sale_group">
@@ -55,7 +56,7 @@
         <input type="text" id="sale_pro" required>
         <br>
         <label for="sale_disc">割引率:</label>
-        <input type="number" id="sale_disc" required>
+        <input type="number" id="sale_disc" min=0 max=100 required>
         <br>
         <label for="sale_info">お得情報:</label>
         <input type="text" id="sale_info">
@@ -89,6 +90,6 @@
     </fieldset>
     <br>
 
-    <script src="new_event.js?v=3"></script>
+    <script src="new_event.js?v=4"></script>
 </body>
 </html>

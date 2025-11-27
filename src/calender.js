@@ -177,7 +177,7 @@ document.querySelector('#next').addEventListener('click', moveCalendar);
 document.querySelector('#nextyear').addEventListener('click', moveCalendar);
 document.addEventListener("click", function(e) {
     if(e.target.classList.contains("calendar_td")) {
-        alert('クリックした日付は' + e.target.dataset.date + 'です');
+        // alert('クリックした日付は' + e.target.dataset.date + 'です');
         // 登録したスーパーのお得日などを表示
         const encodedDay = encodeURIComponent(e.target.dataset.date);
         const encodedSelectIds = encodeURIComponent(selectedSupIds.join(','));

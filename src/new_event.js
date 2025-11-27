@@ -35,20 +35,27 @@ async function fetchnewsale(){
     const rType=document.getElementById('repeat_type').value;
     const rDayofweek=document.getElementById('repeat_dayofweek').value;
     const mDay=document.getElementById('repeat_monthday').value;
-    const yDay=document.getElementById('repeat_yearday').value;
+    const yDay_month=document.getElementById('month').value;
+    const yDay_day=document.getElementById('day').value;
     const oDay=document.getElementById('repeat_oneday').value;
     const sPro=document.getElementById('sale_pro').value;
     const sDisc=document.getElementById('sale_disc').value;
     const sInfo=document.getElementById('sale_info').value;
     const outputSale = document.getElementById('s_output');
     outputSale.textContent = '処理中...';
+    let yDay = '';
+    if (yDay_month && yDay_day) {
+        const paddedMonth = String(yDay_month).padStart(2, '0');
+        const paddedDay = String(yDay_day).padStart(2, '0');
+        yDay = `${paddedMonth}/${paddedDay}`; // 例: '01/05', '11/25'
+    }
 
     if (supId===""||sPro===""){
         outputSale.textContent='必須項目が入力されていません';
         return;
     }
 
-    const apiURL = `new_events.php?event_dayofweek=${rDayofweek}&event_rtype=${rType}&event_monthday=${mDay}&event_yearday=${yDay}&event_oneday=${oDay}`;
+    const apiURL = `new_events.php?event_dayofweek=${rDayofweek}&event_rtype=${rType}&event_monthday=${mDay}&event_yearday=${yDay}&event_yearday=${yDay}&event_oneday=${oDay}`;
 
     try {
         const response = await fetch(apiURL);
@@ -83,12 +90,19 @@ async function fetchnewfes(){
     const rType=document.getElementById('repeat_type').value;
     const rDayofweek=document.getElementById('repeat_dayofweek').value;
     const mDay=document.getElementById('repeat_monthday').value;
-    const yDay=document.getElementById('repeat_yearday').value;
+    const yDay_month=document.getElementById('month').value;
+    const yDay_day=document.getElementById('day').value;
     const oDay=document.getElementById('repeat_oneday').value;
     const fName=document.getElementById('fes_name').value;
     const fInfo=document.getElementById('fes_info').value;
     const outputFes = document.getElementById('f_output');
     outputFes.textContent = '処理中...';
+    let yDay = '';
+    if (yDay_month && yDay_day) {
+        const paddedMonth = String(yDay_month).padStart(2, '0');
+        const paddedDay = String(yDay_day).padStart(2, '0');
+        yDay = `${paddedMonth}/${paddedDay}`; // 例: '01/05', '11/25'
+    }
 
     if (supId===""||fName===""){
         outputFes.textContent='必須項目が入力されていません';
@@ -130,12 +144,19 @@ async function fetchnewholiday(){
     const rType=document.getElementById('repeat_type').value;
     const rDayofweek=document.getElementById('repeat_dayofweek').value;
     const mDay=document.getElementById('repeat_monthday').value;
-    const yDay=document.getElementById('repeat_yearday').value;
+    const yDay_month=document.getElementById('month').value;
+    const yDay_day=document.getElementById('day').value;
     const oDay=document.getElementById('repeat_oneday').value;
     const hName=document.getElementById('hol_name').value;
     const hInfo=document.getElementById('hol_info').value;
     const outputHoliday = document.getElementById('h_output');
     outputHoliday.textContent = '処理中...';
+    let yDay = '';
+    if (yDay_month && yDay_day) {
+        const paddedMonth = String(yDay_month).padStart(2, '0');
+        const paddedDay = String(yDay_day).padStart(2, '0');
+        yDay = `${paddedMonth}/${paddedDay}`; // 例: '01/05', '11/25'
+    }
 
     if (supId===""||hName===""){
         outputHoliday.textContent='必須項目が入力されていません';
@@ -176,34 +197,40 @@ async function fetchnewholiday(){
 function updateRepeatFields() {
     const repeatType = document.getElementById('repeat_type').value;
     const repeatDayOfWeek = document.getElementById('repeat_dayofweek');
+    const Month = document.getElementById('month');
+    const Day = document.getElementById('day');
     const repeatMday = document.getElementById('repeat_monthday');
-    const repeatYday = document.getElementById('repeat_yearday');
     const repeatOday = document.getElementById('repeat_oneday');
 
     // すべてのフィールドを初期状態で有効にする
     repeatDayOfWeek.disabled = false;
+    Month.disabled = false;
+    Day.disabled = false;
     repeatMday.disabled = false;
-    repeatYday.disabled = false;
     repeatOday.disabled = false;
 
     // 選択された周期に応じてフィールドを無効化
     switch (repeatType) {
         case 'weekly':
+            Month.disabled = true;
+            Day.disabled = true;
             repeatMday.disabled = true;
-            repeatYday.disabled = true;
             repeatOday.disabled = true;
 
+            Month.value = '';
+            Day.value = '';
             repeatMday.value = '';
-            repeatYday.value = '';
             repeatOday.value = '';
             break;
         case 'monthly':
             repeatDayOfWeek.disabled = true;
-            repeatYday.disabled = true;
+            Month.disabled = true;
+            Day.disabled = true;
             repeatOday.disabled = true;
             
             repeatDayOfWeek.value = '';
-            repeatYday.value = '';
+            Month.value = '';
+            Day.value = '';
             repeatOday.value = '';
             break;
         case 'yearly':
@@ -217,12 +244,14 @@ function updateRepeatFields() {
             break;
         case 'one':
             repeatDayOfWeek.disabled = true; 
+            Month.disabled = true;
+            Day.disabled = true;
             repeatMday.disabled = true;
-            repeatYday.disabled = true;
             
             repeatDayOfWeek.value = '';
+            Month.value = '';
+            Day.value = '';
             repeatMday.value = '';
-            repeatYday.value = '';
             break;
     }
 }

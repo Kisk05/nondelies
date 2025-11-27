@@ -10,21 +10,23 @@
         <option value="">ロード中...</option>
     </select>
     <br>
+    <label for="store_name">店舗名 (store_name):</label>
+    <input type="text" id="store_name" placeholder="例: 加古川店" maxlength="50" required>
+    <br>
+    <label for="store_postcode">郵便番号 (store_postcode):</label>
+    <input type="text" id="store_postcode" placeholder="例: 1234567" maxlength="7" required>
+    <br>
+    <label for="store_address">住所 (store_address):</label>
+    <input type="text" id="store_address" maxlength="255" required>
+    <br>
+    <button onclick="fetchnewstore()">新規店舗を登録</button>
+
+    <h5>⚠ 店舗名を変更する場合のみ店舗を選択</h5>
     <label for="sto_id">店舗選択:</label>
     <select id="sto_id" required onchange="loadStoreInfo()">
         <option value="">スーパー名を選択してください</option>
     </select>
     <br>
-    <label for="store_name">店舗名 (store_name):</label>
-    <input type="text" id="store_name" required>
-    <br>
-    <label for="store_postcode">郵便番号 (store_postcode):</label>
-    <input type="number" id="store_postcode" required>
-    <br>
-    <label for="store_address">住所 (store_address):</label>
-    <input type="text" id="store_address" required>
-    <br>
-    <button onclick="fetchnewstore()">新規店舗を登録</button>
     <button id="b1" onclick="changestore()">店舗情報を変更</button>
     <div id="output"></div>
 
