@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>新規スーパー登録画面</title>
+</head>
+<body>
+    <label for="sup_id">スーパー選択:</label>
+    <select id="sup_id" required>
+        <option value="">ロード中...</option>
+    </select>
+    <br>
+    <label for="super_name">スーパー名 (super_name):</label>
+    <input type="text" id="super_name" required>
+    <br>
+    <button onclick="fetchnewsuper()">新規スーパー登録</button>
+    <button onclick="changesupername()">スーパー名変更</button>
+    <div id="output"></div>
+
+    <script src="/js/load_super.js?v=1"></script>
+    <script src="/js/new_super.js?v=0"></script>
+</body>
+</html>

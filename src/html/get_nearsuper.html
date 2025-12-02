@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>近くのスーパー検索</title>
+    </head>
+    <body>
+        <h3>現在地を入力</h3>
+        <label for="postcode">郵便番号:</label>
+        <input type="number" id="postcode" required>
+        <br>
+        <label for="address">住所:</label>
+        <input type="text" id="address" required>
+        <br>
+        <button onclick="findsuper()">探す</button>
+        <hr>
+        <label for="near_sup">近くのスーパー:</label>
+        <select id="near_sup" required>
+            <option value="">ロード中...</option>
+        </select>
+        <br>
+        <div id="output"></div>
+
+        <script src="/js/load_storesuper_info.js?v=2"></script>
+        <script src="/js/get_nearsuper.js?v=3"></script>
+    </body>
+</html>

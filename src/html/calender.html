@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>カレンダー表示画面</title>
+    <style>
+        #calendar {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        #calendar td, #calendar th {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        #calendar th {
+            background-color: #f2f2f2;
+        }
+        #calendar .today {
+            background-color: #ffeb3b;
+        }
+        #calendar .sale-day {
+            background-color: #c8e6c9;
+        }
+        #calendar .fes-day {
+            background-color: #c8e6c9;
+        }
+        #calendar .holiday {
+            background-color: #ff9696;
+        }
+        #calendar .is-disabled {
+            color: #adadad;
+        }
+        #calendar .calendar_td_sun {
+            color: #ff4040;
+        }
+        #calendar .calendar_td_sat {
+            color: #3d4dff;
+        }
+    </style>
+</head>
+<body>
+    <h1>お得日カレンダー</h1>
+    <label for="sup_list">スーパー選択:</label>
+    <div id="sup_list">
+        <p>ロード中...</p>
+    </div>
+    <hr>
+    <br>
+    <button id="lastyear" type="button">1年前</button>
+    <button id="prev" type="button">前月</button>
+    <button id="current" type="button">今月</button>
+    <button id="next" type="button">来月</button>
+    <button id="nextyear" type="button">1年後</button>
+    <div id="calendar"></div>
+    <script src="/js/calender.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>新規店舗登録画面</title>
+</head>
+<body>
+    <label for="sup_id">スーパー選択:</label>
+    <select id="sup_id" required onchange="loadStoreList()">
+        <option value="">ロード中...</option>
+    </select>
+    <br>
+    <label for="store_name">店舗名 (store_name):</label>
+    <input type="text" id="store_name" placeholder="例: 加古川店" maxlength="50" required>
+    <br>
+    <label for="store_postcode">郵便番号 (store_postcode):</label>
+    <input type="text" id="store_postcode" placeholder="例: 1234567" maxlength="7" required>
+    <br>
+    <label for="store_address">住所 (store_address):</label>
+    <input type="text" id="store_address" maxlength="255" required>
+    <br>
+    <button onclick="fetchnewstore()">新規店舗を登録</button>
+
+    <h5>⚠ 店舗名を変更する場合のみ店舗を選択</h5>
+    <label for="sto_id">店舗選択:</label>
+    <select id="sto_id" required onchange="loadStoreInfo()">
+        <option value="">スーパー名を選択してください</option>
+    </select>
+    <br>
+    <button id="b1" onclick="changestore()">店舗情報を変更</button>
+    <div id="output"></div>
+
+    <script src="/js/load_super.js?v=1"></script>
+    <script src="/js/load_storesuper_info.js?v=0"></script>
+    <script src="/js/new_store.js?v=0"></script>
+</body>
+</html>

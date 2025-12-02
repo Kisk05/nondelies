@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>スパ得チラシ風UI</title>
+    <style>
+        body {
+            font-family: "メイリオ", sans-serif;
+            background: #fff6c9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 右上ログインボタン */
+        .login-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: white;
+            color: #ff3c3c;
+            border: 3px solid #ff3c3c;
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+        }
+        .login-btn:hover {
+            transform: scale(1.08);
+        }
+
+        /* 上の赤タイトル部分 */
+        .header {
+            background: #ff3c3c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 40px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        /* ボタン2つ並べるエリア */
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        /* チラシ風共通ボタン */
+        .big-button {
+            background: #ffffff;
+            border: 4px solid #ff3c3c;
+            color: #ff3c3c;
+            font-size: 28px;
+            width: 300px;
+            padding: 10px 0;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+        }
+        .big-button:hover {
+            transform: scale(1.08);
+        }
+
+        /* スーパー写真ボタンエリア */
+        .store-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .store-btn {
+            width: 200px;
+            height: 200px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .store-btn:hover {
+            transform: scale(1.12);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.28);
+        }
+
+        .store-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        スパ得！
+        <div class="login-btn">ログイン</div>
+    </div>
+
+    <div class="button-row">
+        <div class="big-button">本日のお得情報</div>
+        <div class="big-button">今週のお得情報</div>
+    </div>
+
+    <div class="store-area">
+        <div class="store-btn"><img src="maruhachi.jpg" alt="マルハチ"></div>
+        <div class="store-btn"><img src="maxvalu.jpg" alt="マックスバリュー"></div>
+        <div class="store-btn"><img src="gyomu.jpg" alt="業務スーパー"></div>
+        <div class="store-btn"><img src="coop.jpg" alt="コープ"></div>
+        <div class="store-btn"><img src="maruai.jpg" alt="マルアイ"></div>
+        <div class="store-btn"><img src="kansai.jpg" alt="関西スーパー"></div>
+    </div>
+
+</body>
+</html>
