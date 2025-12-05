@@ -9,10 +9,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dayofweek=Day.getDay(); // 日曜(0)～土曜(6)
     const monthday=`${Day.getMonth()+1}/${Day.getDate()}`; // 例: '11/25'
     const onlyday=Day.getDate(); // 例: 25
-    const selectIds = params.get('selectid'); // 例: '1,3,5'
+    let selectIds = params.get('selectid'); // 例: '1,3,5'
     supertitle.textContent='選択スーパー：'
 
-    if (day && selectIds) {
+    if(selectIds===null){
+        try {
+            const allsuper = await fetchAllsuper();
+            if (allsuper && allsuper.length > 0) {
+                selectIds = allsuper.map(item => item.sup_id).join(',');
+            } else {
+                selectIds = '';
+            }
+        } catch (error) {
+            console.error("全スーパーIDの取得に失敗しました:", error);
+            selectIds = '';
+        }
+    }
+
+    if (day) {
         const supIdArray = selectIds.split(',');
         for (const supId of supIdArray) {
             const supname = await get_supername(supId); 

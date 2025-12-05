@@ -68,12 +68,14 @@ async function findsuper(){
                 return a.distance - b.distance;
             });
             outputDiv.appendChild(document.createElement('br'));
-            nearsuper.forEach(nearSuper => {
-                const label=document.createElement('label');
-                label.textContent = `スーパー：${nearSuper.sup_id}、ストア：${nearSuper.sto_id}、距離：${nearSuper.distance}m`;
+            for (const [index, nearSuper] of nearsuper.entries()) {
+                const label = document.createElement('label');
+                const sup_name = await get_supername(nearSuper.sup_id);
+                const sto_name = await get_storename(nearSuper.sup_id, nearSuper.sto_id);
+                label.textContent = `${index + 1}位 スーパー：${sup_name}、ストア：${sto_name}、距離：${nearSuper.distance}m`;
                 outputDiv.appendChild(label);
                 outputDiv.appendChild(document.createElement('br'));
-            });
+            }
         }else{
             outputDiv.textContent='スーパーのデータが存在しません';
         }

@@ -3,12 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title id="bartitle">お得日表示画面</title>
+    <style>
+        body {
+            font-family: "メイリオ", sans-serif;
+            background: #fff6c9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 上の赤タイトル部分 */
+        .header {
+            background: #ff3c3c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 40px;
+            font-weight: bold;
+            position: relative;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <h1 id="pagetitle">お得情報</h1>
-        <h3 id="superlist"></h3>
+    <div class="header">
+        <h2 id="pagetitle">お得情報</h2>
     </div>
+    <h3 id="superlist"></h3>
     <label id="sale_title"></label>
     <div id="sale_list"></div>
     <br>
@@ -18,7 +37,7 @@
     <label id="holiday_title"></label>
     <div id="holiday_list"></div>
     <br>
-    <script src="/js/get_daydata.js?v=2"></script>
+    <script src="/js/get_daydata.js?v=0"></script>
     <script src="/js/load_storesuper_info.js?v=1"></script>
 </body>
 </html>

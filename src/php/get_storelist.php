@@ -10,20 +10,26 @@ $response = ['status' => 'error', 'data' => []];
 
 try{
     $db=new PDO('mysql:dbname='.DB_NAME.';host='.DB_HOST.';charset=utf8mb4',DB_USER,DB_PASS);
-    $sql='SELECT sto_id, sto_name FROM store where sup_id=:sup_id';
+    $set_supid=isset($_GET['sup_id'])?(int)$_GET['sup_id']:null;    
+    $set_stoid=isset($_GET['sto_id'])?(int)$_GET['sto_id']:null;
     $countsql='SELECT count(*) FROM store where sup_id=:sup_id';
+
+    $super = !is_null($set_supid) && $set_supid > 0;
+    $store = !is_null($set_stoid) && $set_stoid > 0;
+
+    if ($store){
+        $sql='SELECT sto_id, sto_name FROM store WHERE sup_id=:sup_id && sto_id=:sto_id';
+    }else{
+        $sql='SELECT sto_id, sto_name FROM super WHERE sup_id=:sup_id';
+    }
 
     $stmt = $db->prepare($sql);
     $countstmt = $db->prepare($countsql);
 
-    // パラメータを代入
-    $set_supid=isset($_GET['sup_id'])?(int)$_GET['sup_id']:null;
-    
-    if (is_null($set_supid)){
-        $ERROR[]="sup_idを指定してください";
+    if ($store) {
+        $stmt->bindParam(':sup_id', $set_supid, PDO::PARAM_INT);
+        $stmt->bindParam(':sto_id', $set_stoid, PDO::PARAM_INT);
     }
-
-    $stmt->bindParam(':sup_id', $set_supid, PDO::PARAM_INT);
     $countstmt->bindParam(':sup_id', $set_supid, PDO::PARAM_INT);
 
     // 実行

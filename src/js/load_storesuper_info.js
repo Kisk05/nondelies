@@ -58,6 +58,27 @@ async function get_supername(sup_id){
     }
 }
 
+/*任意の店舗名を取得*/
+async function get_storename(sup_id,sto_id){
+    const apiURL = `/php/get_storelist.php?sup_id=${sup_id}&sto_id=${sto_id}`;
+    
+    try {
+        const response = await fetch(apiURL);
+        const data = await response.json();
+        
+        o=data.data[0];
+        if (data.status === 'success' && o) {
+            return o.sto_name; 
+        } else {
+            console.error(`店舗名取得エラー for ID ${sto_id}:`, data.message || 'データが見つかりません');
+            return '不明な店舗'; 
+        }
+    }catch(error) {
+        console.error('詳細データロードエラー:', error);
+        return '取得失敗';
+    }
+}
+
 /*全スーパー名リストを取得*/
 async function fetchAllsuper() {
     const apiURL='/php/get_superlist.php';
@@ -110,8 +131,13 @@ async function fetchDBCoordinates(supId, stoId) {
     const response = await fetch(apiURL);
     const data = await response.json();
     
-    if (data.sto_latitude) { 
-        return { latitude: data.sto_latitude, longitude: data.sto_longitude };
+    if (data.status === 'success' && data.data && data.data.sto_latitude !== null) { 
+        const lat = parseFloat(data.data.sto_latitude);
+        const lon = parseFloat(data.data.sto_longitude);
+
+        if (!isNaN(lat) && !isNaN(lon)) {
+            return { latitude: lat, longitude: lon };
+        }
     }
     throw new Error("DBから店舗座標を取得できませんでした。");
 }

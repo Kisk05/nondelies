@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from .get_coordinates import get_coordinates
 from .get_address import get_address
 from .get_difference import get_difference
+from .find_super import find_nearsuper
 
 app = Flask(__name__)
 
@@ -82,6 +83,32 @@ def difference():
         })
     else:
         return jsonify({"status": "error","message": "距離取得失敗"}), 400
+
+@app.route('/find_super', methods=['GET'])
+def find_super():
+    """現在地近くのスーパーを探す"""
+    try:
+        lat = request.args.get('lat')
+        lng = request.args.get('lng')
+    except Exception:
+        return jsonify({"status": "error", "message": f"二点の座標を指定してください。{request.args}"}), 400
+    
+    try:
+        Lat = float(lat)
+        Lng = float(lng)
+    except ValueError:
+        return jsonify({"status": "error", "message": "座標パラメータが数値ではありません"}), 400
+    
+    superlist=find_nearsuper(Lat,Lng) 
+
+    if superlist is not None:
+        return jsonify({
+            "status": "success",
+            "result": superlist
+        })
+    else:
+        return jsonify({"status": "error", "message": "近くにスーパーが見つかりません"}), 404
+    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
