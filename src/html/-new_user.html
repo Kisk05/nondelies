@@ -2,21 +2,218 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>ユーザー登録画面</title>
+    <title>ログイン画面</title>
+    <style>
+        body {
+            background-color: #fff6c9;
+            font-family: "メイリオ", Meiryo, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #ff3c3c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 30px;
+            background-color: #fff;
+            border: 2px solid #ff3c3c;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(255, 60, 60, 0.2);
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #333;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 2px solid #ff3c3c;
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            width: 100%;
+            padding: 10px;
+            padding-right: 40px; /* アイコン分の余白 */
+            margin-top: 5px;
+            border: 2px solid #ff3c3c;
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .toggle-eye {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #666;
+    user-select: none; /* 選択不可にする */
+}
+
+
+        .toggle-eye:hover {
+            color: #ff3c3c;
+        }
+
+        .link {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #1a73e8;
+            text-decoration: none;
+            text-align: right;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background-color: #ff3c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background-color: #cc2e2e;
+        }
+
+        .secondary-btn {
+            background-color: #fff;
+            color: #ff3c3c;
+            border: 2px solid #ff3c3c;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .secondary-btn:hover {
+            background-color: #ffeaea;
+        }
+
+        #output {
+            margin-top: 20px;
+            text-align: center;
+            color: #ff3c3c;
+        }
+    </style>
 </head>
 <body>
-    <label for="user_name">ユーザー名:</label>
-    <input type="text" id="user_name" required>
-    <br>
-    <label for="user_email">メールアドレス:</label>
-    <input type="email" id="user_email" required>
-    <br>
-    <label for="user_passwd">パスワード:</label>
-    <input type="text" id="user_passwd" required>
-    <br>
-    <button onclick="fetchchecknewuser()">ユーザー登録</button>
-    <div id="output"></div>
+    <header>スパ得！</header>
+    <div class="container">
+        <h2>ログイン</h2>
 
-    <script src="/js/-user.js?v=0"></script>
+        <label for="user_email">メールアドレス</label>
+        <input type="email" id="user_email" required>
+
+        <label for="user_passwd">パスワード</label>
+        <div class="password-wrapper">
+            <input type="password" id="user_passwd" required>
+            <span class="toggle-eye" id="eyeIcon" onclick="togglePassword()">👁️</span>
+        </div>
+
+        <a href="#" class="link">パスワードをお忘れですか？</a>
+
+        <button onclick="login()">続ける</button>
+        <button class="secondary-btn" onclick="location.href='register.html'">アカウントの作成</button>
+
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwdInput = document.getElementById('user_passwd');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (passwdInput.type === "password") {
+                passwdInput.type = "text";
+                eyeIcon.textContent = "🙈"; // 目を閉じたアイコン
+            } else {
+                passwdInput.type = "password";
+                eyeIcon.textContent = "👁️"; // 目を開けたアイコン
+            }
+        }
+
+        function login() {
+            const userEmail = document.getElementById('user_email').value.trim();
+            const userPasswd = document.getElementById('user_passwd').value.trim();
+            const outputDiv = document.getElementById('output');
+
+            outputDiv.textContent = '処理中...';
+
+            if (userEmail === "" && userPasswd === "") {
+                outputDiv.textContent = '必須情報が入力されていません';
+                return;
+            }
+            if (userEmail !== "" && userPasswd === "") {
+                outputDiv.textContent = 'パスワードを入力してください';
+                return;
+            }
+            if (userEmail === "" && userPasswd !== "") {
+                outputDiv.textContent = 'メールアドレスを入力してください';
+                return;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(userEmail)) {
+                outputDiv.textContent = '正しいメールアドレスを入力してください';
+                return;
+            }
+
+            const apiURL = `/php/-check_newuser.php?user_email=${encodeURIComponent(userEmail)}&user_passwd=${encodeURIComponent(userPasswd)}`;
+
+            fetch(apiURL)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTPエラー ${response.status}: サーバー側でエラーが発生しました。`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    outputDiv.textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    outputDiv.textContent = `エラー: ${error.message}\n` + 'PHPファイルまたはDB接続を確認してください。';
+                    console.error(error);
+                });
+        }
+    </script>
 </body>
 </html>
