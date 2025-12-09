@@ -8,7 +8,7 @@ drop table if exists holiday;
 
 create table users(
     user_id integer PRIMARY KEY AUTO_INCREMENT,
-    user_name varchar(50) NOT NULL UNIQUE,
+    user_name varchar(50) UNIQUE,
     user_email varchar(100) NOT NULL UNIQUE,
     hash_pass varchar(255) NOT NULL,
     create_time timestamp default current_timestamp

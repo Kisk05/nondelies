@@ -34,12 +34,12 @@ function createCalendar(year, month) {
     let dayCount = 1; // 日にちのカウント
     let calendarHtml = '';
 
-    calendarHtml += `<h5 class="calendar_title">${year}/${month}</h5>`;
+    calendarHtml += `<div class="calendar_title">${year}/${month}</div>`;
     calendarHtml += '<table>';
 
     // 曜日の行を作成
     for (let i = 0; i < weeks.length; i++) {
-        calendarHtml += `<td>${weeks[i]}</td>`;
+        calendarHtml += `<td class="dayofweek">${weeks[i]}</td>`;
     }
 
     // カレンダーの最大行数分ループ
@@ -58,12 +58,16 @@ function createCalendar(year, month) {
                 calendarHtml += `<td class="is-disabled">${num}</td>`;
                 dayCount++;
             } else {
-                if(d==0){
-                    calendarHtml += `<td class="calendar_td_sun" data-date="${year}/${month}/${dayCount}">${dayCount}</td>`;
-                }else if(d==6){
-                    calendarHtml += `<td class="calendar_td_sat" data-date="${year}/${month}/${dayCount}">${dayCount}</td>`;
+                if(year==date.getFullYear()&&month==date.getMonth()+1&&dayCount==date.getDate()){
+                    calendarHtml+=`<td class="today" data-date="${year}/${month}/${dayCount}">${dayCount}</td>`
                 }else{
-                    calendarHtml += `<td class="calendar_td" data-date="${year}/${month}/${dayCount}">${dayCount}</td>`;
+                    if(d==0){
+                        calendarHtml += `<td class="calendar_td_sun" data-date="${year}/${month}/${dayCount}">${dayCount}</td>`;
+                    }else if(d==6){
+                        calendarHtml += `<td class="calendar_td_sat" data-date="${year}/${month}/${dayCount}">${dayCount}</td>`;
+                    }else{
+                        calendarHtml += `<td class="calendar_td" data-date="${year}/${month}/${dayCount}">${dayCount}</td>`;
+                    }
                 }
                 dayCount++;
             }
@@ -185,7 +189,7 @@ document.querySelector('#next').addEventListener('click', moveCalendar);
 document.querySelector('#nextyear').addEventListener('click', moveCalendar);
 document.addEventListener("click", function(e) {
     // 日付クリックでページ移動
-    if(e.target.classList.contains("calendar_td")||e.target.classList.contains("calendar_td_sun")||e.target.classList.contains("calendar_td_sat")) {
+    if(e.target.classList.contains("calendar_td")||e.target.classList.contains("calendar_td_sun")||e.target.classList.contains("calendar_td_sat")||e.target.classList.contains("today")) {
         // alert('クリックした日付は' + e.target.dataset.date + 'です');
         const encodedDay = encodeURIComponent(e.target.dataset.date);
         const encodedSelectIds = encodeURIComponent(selectedSupIds.join(','));

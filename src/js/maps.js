@@ -1,4 +1,6 @@
 let map; // グローバルで地図オブジェクトを保持
+let markers=[];
+let currentInfoWindow=null;
 
 function initMap() {
     const centerLocation = { lat: 35.6585805, lng: 139.7454329 };
@@ -7,70 +9,6 @@ function initMap() {
         zoom: 15,               // ズームレベル（1:世界全体, 20:非常に詳細）
         gestureHandling: "cooperative"
     });
-
-    // オプション: マーカーを配置する
-    new google.maps.Marker({
-        position: centerLocation,
-        map: map,
-        title: '東京タワー',
-    });
-
-
-    const textInput = document.getElementById('text-input').value;
-    const textInputButton = document.getElementById('text-input-button');
-    const card = document.getElementById('text-input-card');
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(card);
-    textInputButton.addEventListener('click', () => {
-        findPlaces(textInput);
-    });
-    infoWindow = new google.maps.InfoWindow();
-}
-
-async function findPlaces(query) {
-    const { Place } = (await google.maps.importLibrary('places'));
-    const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker'));
-    const request = {
-        textQuery: query,
-        fields: ['displayName', 'location', 'businessStatus'],
-        includedType: '', // Restrict query to a specific type (leave blank for any).
-        useStrictTypeFiltering: true,
-        locationBias: map.center,
-        isOpenNow: true,
-        language: 'en-US',
-        maxResultCount: 8,
-        minRating: 1, // Specify a minimum rating.
-        region: 'us',
-    };
-    const { places } = await Place.searchByText(request);
-    if (places.length) {
-        const { LatLngBounds } = (await google.maps.importLibrary('core'));
-        const bounds = new LatLngBounds();
-        // First remove all existing markers.
-        for (const id in markers) {
-            markers[id].map = null;
-        }
-        markers = {};
-        // Loop through and get all the results.
-        places.forEach((place) => {
-            const marker = new AdvancedMarkerElement({
-                map,
-                position: place.location,
-                title: place.displayName,
-            });
-            markers[place.id] = marker;
-            marker.addListener('gmp-click', () => {
-                map.panTo(place.location);
-                updateInfoWindow(place.displayName, place.id, marker);
-            });
-            if (place.location != null) {
-                bounds.extend(place.location);
-            }
-        });
-        map.fitBounds(bounds);
-    }
-    else {
-        console.log('No results');
-    }
 }
 
 async function findsuper() {
@@ -130,6 +68,7 @@ function fetchSupermarketData(lat, lng) {
         })
         .then(data => {
             if (data.status === 'success') {
+                rmMarker();
                 data.result.results.forEach(place => {
                     addMarker(
                         place.name,
@@ -157,8 +96,9 @@ function addMarker(name, lat, lng, address, rating, open) {
         map: map, // グローバル変数 map を使用
         title: name,
     });
-    let infoWindowContent='';
+    markers.push(marker);
 
+    let infoWindowContent='';
     /*const KEY = document.getElementById('google_api_key');
     let photoHtml = '';
 
@@ -193,6 +133,22 @@ function addMarker(name, lat, lng, address, rating, open) {
     });
 
     marker.addListener('click', () => {
+        if(currentInfoWindow){
+            currentInfoWindow.close();
+        }
         infoWindow.open(map, marker);
+        currentInfoWindow=infoWindow;
     });
+}
+
+function rmMarker(){
+    // 最初にもとあるピンは削除
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers=[];
+    if(currentInfoWindow){
+        currentInfoWindow.close();
+        currentInfoWindow=null;
+    }
 }

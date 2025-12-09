@@ -1,59 +1,182 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <title>カレンダー表示画面</title>
     <style>
-        #calendar {
-            font-family: Arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
+        body {
+            font-family: "メイリオ", sans-serif;
+            background: #fff6c9;
+            margin: 0;
+            padding: 0;
         }
-        #calendar td, #calendar th {
-            border: 1px solid #ddd;
-            padding: 10px;
+
+        .header {
+            background: #ff3c3c;
+            color: #fff;
+            padding: 25px 20px;
+            text-align: center;
+            font-size: 36px;
+            font-weight: 900;
+            position: relative;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /*スーパー選択*/
+        #sup_list {
+            text-align: center;
+            font-weight: bold;
+            max-width: 900px;
+            margin: 20px auto 10px;
+            padding: 10px 30px;
+            background-color: #fce4ec;
+            /* 薄いピンクで選択エリアを区切る */
+            border-radius: 8px;
+            border: 1px solid #e53935;
+        }
+
+        #sup_list p {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border: 3px solid #e53935;
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
             text-align: center;
         }
-        #calendar th {
-            background-color: #f2f2f2;
+
+        /*月変更ボタン*/
+        .container .change_month {
+            text-align: center;
         }
+        .container button {
+            background-color: #ffcc00;
+            color: #e53935;
+            border: 2px solid #e53935;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.25s ease, box-shadow 0.25s ease; /*hoverの処理をゆっくり*/
+        }
+        .container button:hover { /*カーソルが触れたときの処理*/
+            transform: scale(1.12);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.28);
+        }
+
+        .calendar_title {
+            font-size: 26px;
+            text-align: center;
+            padding-bottom: 15px;
+            color: #e53935;
+            font-weight: bold;
+        }
+
+        /*カレンダー部分*/
+        table {
+            margin: auto;
+        }
+        #calendar .dayofweek {
+            background-color: #e53935;
+            color: #fff;
+            padding: 8px;
+            height: 30px;
+            width: 50px;
+            font-size: 18px;
+        }
+        #calendar td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            height: 80px;
+            width: 70px;
+            vertical-align: top;
+            position: relative;
+            line-height: 1.4;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        #calendar .calendar_td_sun:hover,
+        #calendar .calendar_td_sat:hover,
+        #calendar .calendar_td:hover{
+            background-color: #f2fcd7;
+            cursor: pointer;
+        }
+
+        /*特殊日の色調整*/
         #calendar .today {
-            background-color: #ffeb3b;
+            background-color: #ffe082;
+            border: 3px solid #ffcc00;
         }
-        #calendar .sale-day {
-            background-color: #c8e6c9;
-        }
+
+        #calendar .sale-day,
         #calendar .fes-day {
-            background-color: #c8e6c9;
+            background-color: #81c784;
+            font-weight: bold;
+            color: #000;
         }
+
         #calendar .holiday {
-            background-color: #ff9696;
+            background-color: #ff9d9d;
         }
+
         #calendar .is-disabled {
-            color: #adadad;
+            color: #7d7d7d;
+            background-color: #efefeff5;
         }
+
         #calendar .calendar_td_sun {
             color: #ff4040;
         }
+
         #calendar .calendar_td_sat {
             color: #3d4dff;
         }
+
+        @media (max-width: 600px) {
+            .header {
+                font-size: 24px;
+                padding: 15px;
+            }
+
+            .container button {
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+
+            #calendar td {
+                height: 60px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <h1>お得日カレンダー</h1>
-    <label for="sup_list">スーパー選択:</label>
+    <div class="header">
+        お得日カレンダー
+    </div>
     <div id="sup_list">
         <p>ロード中...</p>
     </div>
-    <hr>
-    <br>
-    <button id="lastyear" type="button">1年前</button>
-    <button id="prev" type="button">前月</button>
-    <button id="current" type="button">今月</button>
-    <button id="next" type="button">来月</button>
-    <button id="nextyear" type="button">1年後</button>
-    <div id="calendar"></div>
-    <script src="/js/calender.js?v=1"></script>
+    <div class="container">
+        <button id="lastyear" type="button">1年前</button>
+        <button id="prev" type="button">前月</button>
+        <button id="current" type="button">今月</button>
+        <button id="next" type="button">来月</button>
+        <button id="nextyear" type="button">1年後</button>
+        <div id="calendar"></div>
+    </div>
+    <script src="/js/calender.js?v=4"></script>
 </body>
+
 </html>

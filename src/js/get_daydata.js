@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let selectIds = params.get('selectid'); // 例: '1,3,5'
     supertitle.textContent='選択スーパー：'
 
-    if(selectIds===null){
+    if(selectIds===""){
         try {
             const allsuper = await fetchAllsuper();
             if (allsuper && allsuper.length > 0) {

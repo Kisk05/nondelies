@@ -9,6 +9,7 @@ gmaps = googlemaps.Client(key=API_KEY)
 
 radius = 5000          # 検索半径（メートル）
 place_type = 'supermarket'
+TARGET_SUPERMARKETS = ['マルハチ', 'マルアイ', 'コープ','マックスバリュ','関西スーパー','業務スーパー']
 
 def find_nearsuper(lat,lng):
     try:
@@ -19,6 +20,15 @@ def find_nearsuper(lat,lng):
             type=place_type,
             language='ja'
         )
+
+        results=[]
+        if 'results' in places_result:
+            for place in places_result['results']:
+                name=place.get('name','')
+                if any(supermarkets in name for supermarkets in TARGET_SUPERMARKETS):
+                    results.append(place)
+        
+        places_result['results']=results
         return places_result
 
     except Exception as e:
