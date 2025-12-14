@@ -145,6 +145,24 @@ async function fetchDBCoordinates(supId, stoId) {
 /*2点間の距離を取得*/
 async function fetchDifferenceAPI(lat1, lon1, lat2, lon2) {
     const setApiURL = `/php/get_difference.php?lat1=${lat1}&lon1=${lon1}&lat2=${lat2}&lon2=${lon2}`;
-    const Response = await fetch(setApiURL);
-    return await Response.json();
+    const response = await fetch(setApiURL);
+    const data = await response.json();
+
+    if (data.status === 'success') {
+        return data.difference;
+    }
+    throw new Error("DBから店舗座標を取得できませんでした。");
+}
+
+/*選択したスーパーをお気に入り登録処理*/
+function regist_favSuper(supId, stoId, supName, stoName) {
+    const message = `${supName}${stoName} をお気に入りとして登録しますか？`;
+
+    if (confirm(message)) {
+        const date = new Date();
+        const todayDate = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+        const encodedDay = encodeURIComponent(todayDate);
+
+        location.href = `/html/get_daydata.html?day=${encodedDay}&supid=${supId}&stoid=${stoId}`;
+    }
 }

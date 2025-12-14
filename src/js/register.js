@@ -1,15 +1,22 @@
-function togglePassword(inputId, iconId) {
-    const input = document.getElementById(inputId);
-    const icon = document.getElementById(iconId);
-    if (input.type === "password") {
-        input.type = "text";
-        icon.textContent = "🙈"; // 目を閉じたアイコン
+function togglePassword(inputId, btnId, iconId) {
+    const passwdInput = document.getElementById(inputId);
+    const eyeBtn = document.getElementById(btnId);
+    const eyeIcon = document.getElementById(iconId); // 新しく取得
+    const openSrc = eyeBtn.dataset.open;
+    const closeSrc = eyeBtn.dataset.close;
+
+    if (passwdInput.type === "password") {
+        passwdInput.type = "text";
+        if (closeSrc) eyeIcon.src = closeSrc;
+        eyeBtn.setAttribute('aria-pressed', 'true');
+        eyeBtn.setAttribute('aria-label', 'パスワードを非表示');
     } else {
-        input.type = "password";
-        icon.textContent = "👁️"; // 目を開けたアイコン
+        passwdInput.type = "password";
+        if (openSrc) eyeIcon.src = openSrc;
+        eyeBtn.setAttribute('aria-pressed', 'false');
+        eyeBtn.setAttribute('aria-label', 'パスワードを表示');
     }
 }
-//TODO: figmaのアイコン使える？
 
 function register() {
     const email = document.getElementById('new_email').value.trim();

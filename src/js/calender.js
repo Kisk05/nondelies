@@ -131,6 +131,11 @@ function getSelectSupid() {
         }
     });
     return selectId;
+
+    /**
+     * TODO:マップに自動表示+再検索機能
+     * TODO:
+     */
 }
 
 // チェックボックスが選択されたとき
@@ -139,12 +144,142 @@ function selectcheckbox(){
     
     // 選択されたスーパーIDのリストが空の場合
     if (selectedSupIds.length === 0) {
-        console.log("スーパーが選択されていません。");
+        document.querySelectorAll('#calendar td:not(.is-disabled)').forEach(cell => {
+            cell.classList.remove('sale-day', 'fes-day', 'holiday');
+        });
         return;
     }
     // カレンダーを再描画し、お得日データをAPIから取得して表示する処理など
+    const url=`/php/get_montheventdata.php?year=${year}&month=${month}&sup_ids=${selectedSupIds}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(result => {
+            if(result.status==='success'){
+                eventCalendar(result.data,year,month);
+            }else{
+                console.log("イベント情報取得APIエラー");
+            }
+        })
+        .catch(error => {
+            console.error('スーパーリストロードエラー:', error);
+        });
+}
+function eventCalendar(eventData, currentYear, currentMonth) {
+    document.querySelectorAll('#calendar td:not(.is-disabled)').forEach(cell => {
+        cell.classList.remove('sale-day', 'fes-day', 'holiday');
+    });
+
+    document.querySelectorAll('#calendar td:not(.is-disabled,.dayofweek)').forEach(cell => {
+        const fullDate = cell.dataset.date;
+        const [y, m, d] = fullDate.split('/').map(Number); // 年、月、日を数値で取得
+        
+        // 判定に必要な情報を準備
+        const dateObj = new Date(y, m - 1, d); // Dateオブジェクト (月の0-11に注意)
+        const dayOfWeek = dateObj.getDay(); // 曜日 (0:日〜6:土)
+        
+        // MM/DD形式とYYYY-MM-DD形式をゼロ埋めして準備
+        const monthDayStr = `${String(m).padStart(2, '0')}/${String(d).padStart(2, '0')}`; // MM/DD
+        const fullDateStr = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`; // YYYY-MM-DD
+
+        let isSale = false;
+        let isFes = false;
+        let isHoliday = false;
+
+        // 特売日 (sale_list) の判定
+        eventData.sale_list.forEach(sale => {
+            if (sale.event_dayofweek == dayOfWeek && sale.event_rtype === 'weekly' ||
+                sale.event_monthday == d && sale.event_rtype === 'monthly' ||
+                sale.event_yearday === monthDayStr && sale.event_rtype === 'yearly' ||
+                sale.event_oneday === fullDateStr && sale.event_rtype === 'one') {
+                isSale = true;
+            }
+        });
+        
+        // フェス・イベント (fes_list) の判定
+        eventData.fes_list.forEach(fes => {
+            if (fes.event_dayofweek == dayOfWeek && fes.event_rtype === 'weekly' ||
+                fes.event_monthday == d && fes.event_rtype === 'monthly' ||
+                fes.event_yearday === monthDayStr && fes.event_rtype === 'yearly' ||
+                fes.event_oneday === fullDateStr && fes.event_rtype === 'one') {
+                isFes = true;
+            }
+        });
+
+        // 定休日 (holiday_list) の判定
+        eventData.holiday_list.forEach(holiday => {
+            if (holiday.event_dayofweek == dayOfWeek && holiday.event_rtype === 'weekly' ||
+                holiday.event_monthday == d && holiday.event_rtype === 'monthly' ||
+                holiday.event_yearday === monthDayStr && holiday.event_rtype === 'yearly' ||
+                holiday.event_oneday === fullDateStr && holiday.event_rtype === 'one') {
+                isHoliday = true;
+            }
+        });
+
+        if (isHoliday) {
+            cell.classList.add('holiday'); // 定休日 (赤系)
+        }else if (isFes) {
+            cell.classList.add('fes-day');
+        }else if(isSale){
+            cell.classList.add('sale-day');
+        }
+    });
 }
 
+/*
+function event_calender(eventdata){
+    if(eventdata.sale_list){
+        eventdata.sale_list.map(sale=>{
+            switch(sale.event_rtype){
+                case 'weekly':
+                    console.log(sale.event_dayofweek,sale.sal_kind);
+                    break;
+                case 'monthly':
+                    console.log(sale.event_monthday,sale.sal_kind);
+                    break;
+                case 'yearly':
+                    console.log(sale.event_yearday,sale.sal_kind);
+                    break;
+                case 'one':
+                    console.log(sale.event_oneday,sale.sal_kind);
+            }
+        })
+    }
+    if(eventdata.fes_list){
+        eventdata.fes_list.map(fes=>{
+            switch(fes.event_rtype){
+                case 'weekly':
+                    console.log(fes.event_dayofweek,fes.fes_name);
+                    break;
+                case 'monthly':
+                    console.log(fes.event_monthday,fes.fes_name);
+                    break;
+                case 'yearly':
+                    console.log(fes.event_yearday,fes.fes_name);
+                    break;
+                case 'one':
+                    console.log(fes.event_oneday,fes.fes_name);
+            }
+        })
+    }
+    if(eventdata.holiday_list){
+        eventdata.holiday_list.map(holiday=>{
+            switch(holiday.event_rtype){
+                case 'weekly':
+                    console.log(holiday.event_dayofweek,holiday.hol_name);
+                    break;
+                case 'monthly':
+                    console.log(holiday.event_monthday,holiday.hol_name);
+                    break;
+                case 'yearly':
+                    console.log(holiday.event_yearday,holiday.hol_name);
+                    break;
+                case 'one':
+                    console.log(holiday.event_oneday,holiday.hol_name);
+            }
+        })
+    }
+}*/
 // ページ表示時にスーパーのリストをチェックボックスとして表示
 function loadSuperChb() {
     const container = document.querySelector('#sup_list');
@@ -161,6 +296,7 @@ function loadSuperChb() {
                     checkbox.type = 'checkbox';
                     checkbox.id=`super_${superlist.sup_id}`;
                     checkbox.value=superlist.sup_id;
+                    checkbox.class='checkbox';
                     checkbox.addEventListener('change', selectcheckbox);
 
                     const label=document.createElement('label');

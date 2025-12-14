@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
-    <title>アカウント作成</title>
+    <title>パスワード変更画面</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&display=swap" rel="stylesheet">
     <style>
         .container {
@@ -18,7 +17,7 @@
 
         h2 {
             font-size: 1.5em;
-            color: #d60000;
+            color: #333;
             margin-bottom: 20px;
             text-align: center;
         }
@@ -47,39 +46,45 @@
         .password-wrapper input {
             width: 100%;
             padding: 10px;
-            padding-right: 40px;
+            padding-right: 40px; /* アイコン分の余白 */
             margin-top: 5px;
             border: 2px solid #d60000;
             border-radius: 6px;
             font-size: 1em;
             box-sizing: border-box;
-            height: 40px;
         }
 
         .toggle-eye {
             position: absolute;
-            top: 50%; 
-            width: auto;
             right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
             cursor: pointer;
-            background: transparent;
-            border: none;
-            padding: 0;
-            display: inline-flex;
-            align-items: center;
-            justify-content: right;
+            font-size: 1.2em;
+            color: #666;
+            user-select: none; /* 選択不可にする */
         }
+
+
         .toggle-eye:hover {
-            background-color: transparent;
-            transform: scale(1.12);
+            color: #d60000;
         }
-        .toggle-eye:hover #eyeIconN,
-        .toggle-eye:hover #eyeIconC {
-            filter: brightness(0) saturate(100%) invert(30%) sepia(80%) saturate(2000%) hue-rotate(330deg);
+
+        .link {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #1a73e8;
+            text-decoration: none;
+            text-align: right;
+        }
+
+        .link:hover {
+            text-decoration: underline;
         }
 
         button {
-            margin-top: 30px;
+            margin-top: 20px;
             width: 100%;
             padding: 12px;
             background-color: #d60000;
@@ -94,7 +99,19 @@
 
         button:hover {
             transform: scale(1.05);
-            background-color: #cc2e2e;
+            background-color: #d60000;
+        }
+
+        .secondary-btn {
+            background-color: #fff;
+            color: #d60000;
+            border: 2px solid #d60000;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .secondary-btn:hover {
+            background-color: #ffeaea;
         }
 
         #output {
@@ -105,7 +122,6 @@
     </style>
     <link rel="stylesheet" href="header.css">
 </head>
-
 <body>
     <div class="header">
         <div class="logo">スパ得</div>
@@ -115,37 +131,19 @@
         </div>
     </div>
     <div class="container">
-        <h2>アカウント作成</h2>
+        <h2>パスワードの再設定</h2>
 
-        <label for="new_email">メールアドレス</label>
-        <input type="email" id="new_email" required>
+        <label for="user_email">メールアドレスを入力してパスワードの再設定をお願いします。</label>
 
-        <label for="new_passwd">パスワード</label>
-        <div class="password-wrapper">
-            <input type="password" id="new_passwd" required>
-            <button type="button" class="toggle-eye" id="eyeBtnN" data-open="/add/eye_open.php"
-                data-close="/add/eye_close.php" aria-pressed="false" aria-label="パスワードを表示"
-                onclick="togglePassword('new_passwd', 'eyeBtnN', 'eyeIconN')">
-                <img id="eyeIconN" src="/add/eye_open.php" alt="目アイコン" width="20" height="20">
-            </button>
-        </div>
+        <label for="user_email">メールアドレス</label>
+        <input type="email" id="user_email" required>
 
-        <label for="confirm_passwd">パスワード（再入力）</label>
-        <div class="password-wrapper">
-            <input type="password" id="confirm_passwd" required>
-            <button type="button" class="toggle-eye" id="eyeBtnC" data-open="/add/eye_open.php"
-                data-close="/add/eye_close.php" aria-pressed="false" aria-label="パスワードを表示"
-                onclick="togglePassword('confirm_passwd', 'eyeBtnC', 'eyeIconC')">
-                <img id="eyeIconC" src="/add/eye_open.php" alt="目アイコン" width="20" height="20">
-            </button>
-        </div>
-
-        <button onclick="register()">アカウントを作成</button>
+        
+        <button onclick="login()">続ける</button>
+        
 
         <div id="output"></div>
     </div>
-
-    <script src="/js/register.js?v=2"></script>
+    <script src="/js/fool.js?v=0"></script>
 </body>
-
 </html>

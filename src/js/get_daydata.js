@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // URLからパラメータを取得
     const bartitle = document.getElementById('bartitle');
     const pagetitle = document.getElementById('pagetitle');
-    const supertitle = document.getElementById('superlist');
     const params = new URLSearchParams(window.location.search);
     const day = params.get('day'); // 例: '2025/11/25'
     const Day=new Date(day);
@@ -10,7 +9,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const monthday=`${Day.getMonth()+1}/${Day.getDate()}`; // 例: '11/25'
     const onlyday=Day.getDate(); // 例: 25
     let selectIds = params.get('selectid'); // 例: '1,3,5'
-    supertitle.textContent='選択スーパー：'
+/*    const supertitle = document.getElementById('superlist');
+    supertitle.textContent='選択スーパー：'*/
 
     if(selectIds===""){
         try {
@@ -27,11 +27,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (day) {
-        const supIdArray = selectIds.split(',');
+        /*const supIdArray = selectIds.split(',');
         for (const supId of supIdArray) {
             const supname = await get_supername(supId); 
             supertitle.textContent += ` ${supname}`;
-        }
+        }*/
         
         console.log(`日付: ${day}, 月日: ${monthday}, 日: ${onlyday}, 曜日ID: ${dayofweek}, 選択スーパーID: ${selectIds}`);
         bartitle.textContent=`${Day.getMonth()+1}月${Day.getDate()}日のお得日表示画面`

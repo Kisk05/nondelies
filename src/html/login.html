@@ -1,38 +1,24 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <title>ログイン画面</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #fff6c9;
-            font-family: "メイリオ", Meiryo, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #ff3c3c;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 2.5em;
-            font-weight: bold;
-        }
-
         .container {
             max-width: 400px;
             margin: 60px auto;
             padding: 30px;
             background-color: #fff;
-            border: 2px solid #ff3c3c;
+            border: 2px solid #d60000;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(255, 60, 60, 0.2);
         }
 
         h2 {
             font-size: 1.5em;
-            color: #333;
+            color: #d60000;
             margin-bottom: 20px;
             text-align: center;
         }
@@ -48,7 +34,7 @@
             width: 100%;
             padding: 10px;
             margin-top: 5px;
-            border: 2px solid #ff3c3c;
+            border: 2px solid #d60000;
             border-radius: 6px;
             font-size: 1em;
             box-sizing: border-box;
@@ -61,9 +47,9 @@
         .password-wrapper input {
             width: 100%;
             padding: 10px;
-            padding-right: 40px; /* アイコン分の余白 */
+            padding-right: 40px;
             margin-top: 5px;
-            border: 2px solid #ff3c3c;
+            border: 2px solid #d60000;
             border-radius: 6px;
             font-size: 1em;
             box-sizing: border-box;
@@ -71,18 +57,23 @@
 
         .toggle-eye {
             position: absolute;
+            width: auto;
+            top: auto;
             right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
             cursor: pointer;
-            font-size: 1.2em;
-            color: #666;
-            user-select: none; /* 選択不可にする */
+            background: transparent;
+            border: none;
+            padding: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: right;
         }
-
-
         .toggle-eye:hover {
-            color: #ff3c3c;
+            background-color: transparent;
+            transform: scale(1.12);
+        }
+        .toggle-eye:hover #eyeIcon {
+            filter: brightness(0) saturate(100%) invert(30%) sepia(80%) saturate(2000%) hue-rotate(330deg);
         }
 
         .link {
@@ -102,7 +93,7 @@
             margin-top: 20px;
             width: 100%;
             padding: 12px;
-            background-color: #ff3c3c;
+            background-color: #d60000;
             color: white;
             border: none;
             border-radius: 8px;
@@ -114,13 +105,13 @@
 
         button:hover {
             transform: scale(1.05);
-            background-color: #cc2e2e;
+            background-color: #d60000;
         }
 
         .secondary-btn {
             background-color: #fff;
-            color: #ff3c3c;
-            border: 2px solid #ff3c3c;
+            color: #d60000;
+            border: 2px solid #d60000;
             margin-top: 10px;
             font-weight: bold;
         }
@@ -132,12 +123,20 @@
         #output {
             margin-top: 20px;
             text-align: center;
-            color: #ff3c3c;
+            color: #d60000;
         }
     </style>
+    <link rel="stylesheet" href="header.css">
 </head>
+
 <body>
-    <header>スパ得！</header>
+    <div class="header">
+        <div class="logo">スパ得</div>
+        <div class="header-right">
+            <a href="title.html">トップ</a>
+            <a href="login.html" class="login-btn" id="login-btn">ログイン</a>
+        </div>
+    </div>
     <div class="container">
         <h2>ログイン</h2>
 
@@ -147,10 +146,12 @@
         <label for="user_passwd">パスワード</label>
         <div class="password-wrapper">
             <input type="password" id="user_passwd" required>
-            <span class="toggle-eye" id="eyeIcon" onclick="togglePassword()">👁️</span>
+            <button type="button" class="toggle-eye" id="eyeBtn" data-open="/add/eye_open.php" data-close="/add/eye_close.php" aria-pressed="false" aria-label="パスワードを表示" onclick="togglePassword()">
+                <img id="eyeIcon" src="/add/eye_open.php" alt="目アイコン" width="20" height="20">
+            </button>
         </div>
 
-        <a href="#" class="link">パスワードをお忘れですか？</a>
+        <a href="fool.html" class="link">パスワードをお忘れですか？</a>
 
         <button onclick="login()">続ける</button>
         <button class="secondary-btn" onclick="location.href='register.html'">アカウントの作成</button>
@@ -159,4 +160,5 @@
     </div>
     <script src="/js/login.js?v=2"></script>
 </body>
+
 </html>

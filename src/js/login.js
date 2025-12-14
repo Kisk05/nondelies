@@ -1,12 +1,20 @@
 function togglePassword() {
     const passwdInput = document.getElementById('user_passwd');
-    const eyeIcon = document.getElementById('eyeIcon');
+    const eyeBtn = document.getElementById('eyeBtn');
+
+    const openSrc = eyeBtn.dataset.open;
+    const closeSrc = eyeBtn.dataset.close;
+
     if (passwdInput.type === "password") {
         passwdInput.type = "text";
-        eyeIcon.textContent = "🙈"; // 目を閉じたアイコン
+        if (closeSrc) eyeIcon.src = closeSrc;
+        eyeBtn.setAttribute('aria-pressed', 'true');
+        eyeBtn.setAttribute('aria-label', 'パスワードを非表示');
     } else {
         passwdInput.type = "password";
-        eyeIcon.textContent = "👁️"; // 目を開けたアイコン
+        if (openSrc) eyeIcon.src = openSrc;
+        eyeBtn.setAttribute('aria-pressed', 'false');
+        eyeBtn.setAttribute('aria-label', 'パスワードを表示');
     }
 }
 

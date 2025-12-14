@@ -4,26 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>カレンダー表示画面</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: "メイリオ", sans-serif;
-            background: #fff6c9;
-            margin: 0;
-            padding: 0;
-        }
-
-        .header {
-            background: #ff3c3c;
-            color: #fff;
-            padding: 25px 20px;
-            text-align: center;
-            font-size: 36px;
-            font-weight: 900;
-            position: relative;
-            letter-spacing: 2px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
         /*スーパー選択*/
         #sup_list {
             text-align: center;
@@ -31,14 +13,17 @@
             max-width: 900px;
             margin: 20px auto 10px;
             padding: 10px 30px;
-            background-color: #fce4ec;
-            /* 薄いピンクで選択エリアを区切る */
             border-radius: 8px;
-            border: 1px solid #e53935;
         }
 
         #sup_list p {
             margin: 0;
+        }
+
+        #sup_list p .checkbox{
+            background: transparent;
+            color: #d60000;
+            border: 4px solid #d60000;
         }
 
         .container {
@@ -46,7 +31,7 @@
             margin: 40px auto;
             padding: 30px;
             background-color: #fff;
-            border: 3px solid #e53935;
+            border: 3px solid #d60000;
             border-radius: 12px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
             text-align: center;
@@ -58,8 +43,8 @@
         }
         .container button {
             background-color: #ffcc00;
-            color: #e53935;
-            border: 2px solid #e53935;
+            color: #d60000;
+            border: 2px solid #d60000;
             padding: 8px 15px;
             margin: 5px;
             border-radius: 5px;
@@ -78,7 +63,7 @@
             font-size: 26px;
             text-align: center;
             padding-bottom: 15px;
-            color: #e53935;
+            color: #d60000;
             font-weight: bold;
         }
 
@@ -87,7 +72,7 @@
             margin: auto;
         }
         #calendar .dayofweek {
-            background-color: #e53935;
+            background-color: #d60000;
             color: #fff;
             padding: 8px;
             height: 30px;
@@ -95,6 +80,7 @@
             font-size: 18px;
         }
         #calendar td {
+            color: #000;
             border: 1px solid #ddd;
             padding: 8px;
             height: 80px;
@@ -103,8 +89,8 @@
             position: relative;
             line-height: 1.4;
             font-size: 14px;
-            font-weight: bold;
         }
+        #calendar .today:hover,
         #calendar .calendar_td_sun:hover,
         #calendar .calendar_td_sat:hover,
         #calendar .calendar_td:hover{
@@ -114,15 +100,17 @@
 
         /*特殊日の色調整*/
         #calendar .today {
-            background-color: #ffe082;
-            border: 3px solid #ffcc00;
-        }
-
-        #calendar .sale-day,
-        #calendar .fes-day {
-            background-color: #81c784;
+            color: #00d615;
             font-weight: bold;
-            color: #000;
+            font-size: 18px;
+        }
+        
+        #calendar .sale-day{
+            background-color: #ffe786;
+        }
+        
+        #calendar .fes-day {
+            background-color: #bafbbe;
         }
 
         #calendar .holiday {
@@ -135,7 +123,7 @@
         }
 
         #calendar .calendar_td_sun {
-            color: #ff4040;
+            color: #d60000;
         }
 
         #calendar .calendar_td_sat {
@@ -159,11 +147,16 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="header.css">
 </head>
 
 <body>
     <div class="header">
-        お得日カレンダー
+        <div class="logo">スパ得</div>
+        <div class="header-right">
+            <a href="title.html">トップ</a>
+            <a href="login.html" class="login-btn" id="login-btn">ログイン</a>
+        </div>
     </div>
     <div id="sup_list">
         <p>ロード中...</p>
@@ -176,7 +169,7 @@
         <button id="nextyear" type="button">1年後</button>
         <div id="calendar"></div>
     </div>
-    <script src="/js/calender.js?v=4"></script>
+    <script src="/js/calender.js?v=2"></script>
 </body>
 
 </html>
