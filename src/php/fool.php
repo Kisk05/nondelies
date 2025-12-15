@@ -25,7 +25,7 @@ try {
     $mail->SMTPAuth = true;
 
     // ✅ Gmail アドレス
-    $mail->Username = getenv('SMTP_USER');
+    $mail->Username = getenv('SMTP_USER'); //envからもってくる
 
 
     // ✅ Gmail のアプリパスワード（16桁）
