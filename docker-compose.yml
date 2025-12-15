@@ -6,24 +6,23 @@ services:
   web:
     build:
       context: .
-      dockerfile: dockerfile 
+      dockerfile: dockerfile
     container_name: nondelies_web
     ports:
       - "8081:80"
     volumes:
-      - ./src:/var/www/html 
-      - ./mysql-client.cnf:/etc/mysql/conf.d/client.cnf 
-    # 依存関係
+      - ./src:/var/www/html
+      - ./mysql-client.cnf:/etc/mysql/conf.d/client.cnf
     depends_on:
-      - db 
-    # 環境変数
+      - db
     environment:
       TZ: Asia/Tokyo
-      
+    env_file:
+      - .env   # ✅ ← これを追加（最重要）
 
   # PythonAPI
   python_api:
-    build: 
+    build:
       context: ./python_api
       dockerfile: dockerfile.python
     container_name: nondelies_python
@@ -34,26 +33,18 @@ services:
     env_file:
       - .env
 
-
   # データベース
   db:
     build:
       context: .
       dockerfile: dockerfile.db
     container_name: nondelies_db
-    # 環境変数
     environment:
-      # ルートユーザーのパスワード
-      MYSQL_ROOT_PASSWORD: 1017god25 
-      # アプリケーションが使用するデータベース名
-      MYSQL_DATABASE: ndl_db 
-      # アプリケーションが使用するユーザー名
-      MYSQL_USER: ndl_user 
-      # アプリケーションが使用するユーザーのパスワード
-      MYSQL_PASSWORD:  ndl_passwd
-      
+      MYSQL_ROOT_PASSWORD: 1017god25
+      MYSQL_DATABASE: ndl_db
+      MYSQL_USER: ndl_user
+      MYSQL_PASSWORD: ndl_passwd
       TZ: Asia/Tokyo
-
     volumes:
       - db_data:/var/lib/mysql
       - ./db-init:/docker-entrypoint-initdb.d
