@@ -1,3 +1,5 @@
 # Docker volumes/data
 db_data/
 .env
+
+/src/vendor/
